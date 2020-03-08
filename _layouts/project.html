@@ -2,8 +2,13 @@
 layout: default
 ---
 
+{% if page.mathjax  %}
+{% include mathjax_support.html %}
+{% endif %}
+
 <article class="post" role="article">
   <h1>{{ page.title }}</h1>
-  <time class="date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y" }} &middot; {{ page.category }}</time>
+  <time class="date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y" }} &middot;
+    {{ page.category }}</time>
   {{ content }}
 </article>

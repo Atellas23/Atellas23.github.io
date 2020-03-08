@@ -1,0 +1,371 @@
+I"�Q<h1 id="anàlisi-de-dades">Anàlisi de Dades</h1>
+
+<p>[TOC]</p>
+
+<h2 id="1-introducció-i-pre-processament-de-dades">1. Introducció i pre-processament de dades</h2>
+
+<h3 id="11-introducció">1.1. Introducció</h3>
+
+<p>Estudiarem dos tipus de dades en aquest curs:</p>
+
+<ul>
+  <li>Conjunts de dades multivariades (moltes observacions i moltes variables).</li>
+  <li>Sèries temporals (variables que s’observen de manera repetida en el temps, diàriament, setmanalment, mensualment, etc).</li>
+</ul>
+
+<p>Les sub-disciplines de l’estadística dedicades a l’anàlisi de dades així són <strong>l’anàlisi multivariat</strong> i <strong>l’anàlisi de sèries temporals</strong>, i tractarem ambdues tècniques en aquest curs.</p>
+
+<h3 id="12-pre-processament">1.2. Pre-processament</h3>
+
+<p>Generalment no es recomana ajustar models estadístics directament sobre <em>datasets</em> sense processar. Existeixen moltes tècniques de <span style="color:blue">netejat de dades</span> i <span style="color:blue">pre-processament</span> que ajuden a assegurar la qualitat de les dades i que faciliten una anàlisi amb més sentit. El pre-processament presenta diverses característiques importants:</p>
+
+<ul>
+  <li>Conversió de l’arxiu de dades a un format adequat.</li>
+  <li>Evitar duplicacions.</li>
+  <li>Comprovar l’existència de <span style="color:blue">dades mancants</span>, <em><span style="color:blue">outliers</span></em> i <span style="color:blue">zeros</span>.</li>
+  <li>Comprovar si s’han de fer transformacions sobre les dades.</li>
+</ul>
+
+<h3 id="13-valors-mancants">1.3. Valors mancants</h3>
+
+<p><strong>Treballant amb valors mancants:</strong> N’existeixen? Com estan codificats? Quin percentatge de les dades falta? Es concentren els valors mancants en algunes variables o individus?</p>
+
+<h4 id="classificació-dels-valors-mancants">Classificació dels valors mancants</h4>
+
+<ol>
+  <li><em>Missing Completely At Random</em> (MCAR):
+    <ul>
+      <li>Hi ha valors mancants, però es pot intentar veure un <em>dataset</em> hipotètic d’individus observats completament.</li>
+      <li>Si les observacions són una mostra aleatòria d’aquestes dades ideals, aleshores les dades mancants són MCAR.</li>
+      <li>Les observacions que falten són també observacions aleatòries d’aquest <em>dataset</em>.</li>
+      <li>Descartar els valors mancants no és molt problemàtic si no n’hi ha gaires.</li>
+    </ul>
+  </li>
+  <li><em>Missing At Random</em> (MAR):
+    <ul>
+      <li>La probabilitat que un resultat falti per una variable particular pot dependre de les altres dades observades (per exemple d’altres variables que sí que han estat observades).</li>
+      <li>Condicionat a les dades observades, aquesta probabilitat pot no dependre dels valors de la variable.</li>
+    </ul>
+  </li>
+  <li><em>Missing Not At Random</em> (MNAR):
+    <ul>
+      <li>La probabilitat d’un valor mancant depèn en els valors de la variable en consideració, inclús després de controlar les relacions amb altres variables rellevants.</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="opcions-dactuació">Opcions d’actuació</h4>
+
+<h5 id="esborrar-dades-mancants">Esborrar dades mancants</h5>
+
+<p>Si esborrem les dades mancants, la mida de la mostra es redueix, i perdem poder per detectar efectes interessants. La inferència estadística podria estar esbiaixada si les dades mancants no són MCAR.</p>
+
+<h5 id="imputació-de-dades-mancants">Imputació de dades mancants</h5>
+
+<h6 id="imputació-per-la-mitjana">Imputació per la mitjana</h6>
+
+<p>Se substitueixen els valors mancants per la mitjana de les observacions. Això atenua l’efecte de la variable explicativa sobre la variable resposta.</p>
+
+<p><img src="C:\Users\alexb\AppData\Roaming\Typora\typora-user-images\image-20200213093808158.png" alt="image-20200213093808158" /></p>
+
+<h6 id="imputació-per-regressió">Imputació per regressió</h6>
+
+<p>Se substitueixen els valors mancants per el valor de la recta de regressió. Es podria subestimar la variància real de les dades.</p>
+
+<p><img src="C:\Users\alexb\AppData\Roaming\Typora\typora-user-images\image-20200213093833105.png" alt="image-20200213093833105" /></p>
+
+<h6 id="imputació-per-regressió-estocàstica">Imputació per regressió estocàstica</h6>
+
+<p>Es substitueixen els punts pels valors de la regressió lineal més un soroll tret de $\mathcal{N}(0,s_e^2)$.</p>
+
+<p><img src="C:\Users\alexb\AppData\Roaming\Typora\typora-user-images\image-20200213093846857.png" alt="image-20200213093846857" /></p>
+
+<h6 id="imputació-múltiple">Imputació múltiple</h6>
+
+<p>S’aplica molts cops la imputació per regressió estocàstica i es fa cada cop la recta de nou. Finalment, el valor se substitueix per la mitjana de tots aquests.</p>
+
+<p><img src="C:\Users\alexb\AppData\Roaming\Typora\typora-user-images\image-20200213093901096.png" alt="image-20200213093901096" /></p>
+
+<h3 id="14-zeros">1.4. Zeros</h3>
+
+<p>Tractar zeros és una operació delicada, ja que es poden confondre els zeros per valors mancants (per exemple, com fa MS Excel amb les cel·les en blanc). Per tant, és molt important la manera de codificar les dades, i resulta essencial utilitzar un <strong>codi especial a la base de dades</strong> per indicar si la dada és, en efecte, mancant. Per exemple, en <code class="highlighter-rouge">R</code>, fem servir ` NA` pels valors mancants.</p>
+
+<h3 id="15-outliers">1.5. <em>Outliers</em></h3>
+
+<p>Podem tenir <em>outliers</em> univariats, bivariats, o multivariats. Els dos primers els podem identificar amb diagrames univariants i bivariants, però per detectar els multivariats és més complicat.</p>
+
+<p><strong>Com s’actua sobre els <em>outliers</em>?</strong></p>
+
+<ul>
+  <li>Primer cal comprovar si el valor correspon a una mesura correcta o és clarament errònia o impossible. Per exemple, es pot consultar a la gent que ha generat les dades en qüestió.</li>
+  <li>Depenent de la tècnica estadística utilitzada, un <em>outlier</em> pot ser problemàtic o no. Si es considera problemàtica l’existència d’<em>outliers</em>, es pot considerar una transformació de les dades per atenuar-ne l’efecte.</li>
+</ul>
+
+<p>Per tant, es fa l’anàlisi amb i sense els <em>outliers</em>, i es comparen resultats.</p>
+
+<h3 id="16-transformacions">1.6. Transformacions</h3>
+
+<p>En estadística s’utilitzen molt les transformacions de les variables aleatòries. Per quins motius s’utilitzen?</p>
+
+<ul>
+  <li>Per reduir els efectes dels <em>outliers</em>.</li>
+  <li>Per fer una distribució més simètrica.</li>
+  <li>Per produir homoscedasticitat.</li>
+  <li>Per aconseguir normalitat aproximada.</li>
+  <li>Per eliminar una restricció que opera sobre les dades</li>
+  <li>…</li>
+</ul>
+
+<p><strong><span style="color:green">Transformacions comunes</span>:</strong></p>
+
+<ul>
+  <li>$y=\ln(x)$ (zeros no permesos).</li>
+  <li>$y=\sqrt{x}$ (zeros permesos).</li>
+  <li>Transformació <em>logit</em> per probabilitats $y=\ln\left(\frac{p}{1-p}\right).$</li>
+  <li>Substituir les observacions pel seu rang (?) /// la seva posició (?).</li>
+  <li>Transformació de la potència $y=x^a$.</li>
+  <li>Transformació de Box-Cox.</li>
+</ul>
+
+<h4 id="transformació-de-box-cox">Transformació de Box-Cox</h4>
+
+<p>La transformació de Box-Cox es pot utilitzar per aconseguir normalitat aproximada en una variable aleatòria. La seva expressió analítica és
+<script type="math/tex">y_i^{(\lambda)}=\begin{cases}\frac{y_i^\lambda-1}{\lambda}\ \ \quad\lambda\neq0\\ \ln(y_i)\quad\lambda=0\end{cases}.</script>
+El valor òptim de $\lambda$ s’aconsegueix per màxima versemblança.</p>
+
+<h2 id="2-àlgebra-de-matrius-aplicada-a-lanàlisi-multivariant">2. Àlgebra de matrius aplicada a l’anàlisi multivariant</h2>
+
+<h3 id="resum-de-vectors-i-matrius">Resum de vectors i matrius</h3>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>Norma-2:</strong> $|x|<em>2=\sqrt{x^Tx}=\sqrt{\sum</em>{i=1}^dx_i^2};|\alpha x|_2=</td>
+          <td>\alpha</td>
+          <td>\cdot|x|_2.$</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><strong>Producte escalar:</strong> $&lt;x,y&gt;_2=x^Ty=x_1y_1+\cdots+x_dy_d;&lt;x,y&gt;=0\iff x\perp y.$</li>
+  <li><strong>Angle:</strong> $\cos{\theta}=\frac{&lt;x,y&gt;_2}{|x|_2\cdot|y|_2}.$</li>
+  <li><strong>Descomposició espectral i SVD:</strong></li>
+</ul>
+
+<h3 id="matrius-bàsiques-a-lanàlisi-multivariant">Matrius bàsiques a l’anàlisi multivariant</h3>
+
+<ul>
+  <li><strong>Matriu de dades:</strong> $X_{n\times p}.$</li>
+  <li><strong>Vector de mitjana mostral:</strong> $\boldsymbol m_{p\times1}=\left(\frac{1}{d}\boldsymbol 1^TX\right)^T.$</li>
+  <li><strong>Matriu de dades centrades:</strong> $X_c=X-\boldsymbol 1_{n\times1}\boldsymbol m^T=\left(I-\frac{1}{n}\boldsymbol1\boldsymbol1^T\right)X.$</li>
+  <li><strong>Matriu centradora:</strong> $H=I-\frac{1}{n}\boldsymbol1\boldsymbol1^T\implies X_c=HX.$</li>
+  <li><strong>Matriu de dades estandaritzades:</strong> $X_s=X_cD^{-1}$, on $D_s=\text{diag}(s_1,\ldots,s_p)$ és la matriu de les desviacions típiques de les columnes de $X$. Per tant, $X_s=HXD_s^{-1}.$</li>
+  <li><strong>Matriu de covariàncies mostrals:</strong> $S=\frac{1}{n-1}X_c^TX_c.$</li>
+  <li><strong>Matriu de correlacions mostrals:</strong> $R=D_s^{-1}SD_s^{-1}=\frac{1}{n-1}D_s^{-1}X^TH^THXD_s^{-1}=\frac{1}{n-1}X_s^TX_s.$</li>
+</ul>
+
+<h4 id="distàncies-importants-a-lanàlisi-multivariant">Distàncies importants a l’anàlisi multivariant</h4>
+
+<ul>
+  <li><strong>Euclidiana:</strong></li>
+</ul>
+
+<script type="math/tex; mode=display">\delta_{rs}=\sqrt{(x_s-x_s)^T(x_r-x_s)}=\left(\sum_{i=1}^p|x_{ri}-x_{si}|^2\right)^\frac{1}{2}.</script>
+
+<ul>
+  <li><strong>Distància de Mahalanobis:</strong></li>
+</ul>
+
+<script type="math/tex; mode=display">\delta_{rs}=\left((x_r-x_s)^TS^{-1}(x_r-x_s)\right)^\frac{1}{2}.</script>
+
+<ul>
+  <li><strong>Distància de Minkowski:</strong></li>
+</ul>
+
+<script type="math/tex; mode=display">\delta_{rs}=\left(\sum_{i=1}^p|x_{ri}-x_{si}|^\lambda\right)^\frac{1}{\lambda}.</script>
+
+<h2 id="3-anàlisi-de-components-principals-pca">3. Anàlisi de components principals (PCA)</h2>
+
+<p>Els objectius principals de l’<strong>Anàlisi de components principals (PCA)</strong> són:</p>
+
+<ul>
+  <li>Reduir el nombre de variables.</li>
+  <li>Una visualització de la matriu de dades a través d’un <em>biplot</em>.</li>
+</ul>
+
+<h3 id="teoria-de-la-pca">Teoria de la PCA</h3>
+
+<p>Busquem combinacions lineals de les variables originals,
+<script type="math/tex">F_1=a_{11}X_1+a_{12}X_2+\cdots+a_{1p}X_p\\
+F_2=a_{21}X_1+a_{22}X_2+\cdots+a_{2p}X_p\\
+\vdots\\
+F_p=a_{p1}X_1+a_{p2}X_2+\cdots+a_{pp}X_p\\</script>
+tals que satisfacin:</p>
+
+<ul>
+  <li>$F_1,F_2,\ldots,F_p$ no correlades.</li>
+  <li>$\text{Var}(F_1)$ màxima.</li>
+  <li>$\text{Var}(F_1)\geq\text{Var}(F_2)\geq\cdots\geq\text{Var}(F_p)$.</li>
+  <li>$a_{i1}^2+a_{i2}^2+\cdots+a_{ip}^2=1.\qquad(-1\leq a_{ij}\leq1)$</li>
+</ul>
+
+<p>Tots els coeficients i valors propis es poden obtenir de la <strong>descomposició espectral</strong> de la matriu de covariàncies, $S=AD_\lambda A^T$. Les <strong>components principals</strong> s’obtenen calculant
+<script type="math/tex">% <![CDATA[
+\begin{matrix}
+F_p & = & X_c & A.\\
+(n\times p) & & (n\times p) & (p\times p)
+\end{matrix} %]]></script>
+Els valors propis corresponen a les variàncies de les components principals perquè
+<script type="math/tex">\frac{1}{n-1}F_p^TF_p=\frac{1}{n-1}(X_cA)^TX_cA=\frac{1}{n-1}A^TX_c^TX_cA=A^TSA=A^TAD_\lambda A^TA=D_\lambda.</script>
+Una manera alternativa de fer PCA és utilitzant la <strong>descomposició en valors singulars (SVD)</strong> de la matriu de dades centrada, $X_c=UDA^T$. Les components principals aleshores es calculen amb $F_p=X_cA=UD$. Els valors singulars al quadrat es relacionen amb la variància dels components principals perquè
+<script type="math/tex">\frac{1}{n-1}F_p^TF_p=\frac{1}{n-1}(UD)^TUD=\frac{1}{n-1}D^2=D_\lambda.</script>
+Aquesta aproximació és molt convenient per construir <em>biplots</em>.</p>
+
+<h3 id="biplots"><em>Biplots</em></h3>
+
+<p>Un <em>biplot</em> és una eina molt útil per explorar gràficament dades multivariants. És una generalització multivariant de l’<em>scatterplot</em>, però difereix d’aquest en alguns aspectes:</p>
+
+<ul>
+  <li>Típicament té més de dos eixos.</li>
+  <li>Els eixos no són perpendiculars, sinó que tendeixen a ser oblics.</li>
+  <li>La matriu de dades es representa de manera aproximada, no exacta.</li>
+</ul>
+
+<p>Un <em>biplot</em> és una visualització de les files i columnes d’una matriu que és òptima en termes de mínims quadrats.</p>
+
+<p>Per fer un <em>biplot</em> d’una matriu, primer l’hem de factoritzar
+<script type="math/tex">X_{n\times p}=F_{n\times r}G_{r\times p}^T\qquad(1)</script>
+en el producte d’una matriu de <strong>marcadors de files</strong>, $F$, i una matriu de <strong>marcadors de columnes</strong>, $G$. Aquesta factorització també existeix en un scatterplot ordinari,
+<script type="math/tex">X_{n\times2}=X_{n\times2}I_{2\times2}.</script>
+La factorització $(1)$ no és única; amb qualsevol aplicació lineal invertible $T$ tenim
+<script type="math/tex">X_{n\times p}=F_{n\times r}TT^{-1}G_{r\times p}^T=\tilde F_{n\times r}\tilde G_{r\times p}^T.\qquad(2)</script></p>
+
+<h4 id="biplots-i-el-producte-escalar"><em>Biplots</em> i el producte escalar</h4>
+
+<p>En un <em>biplot</em>, els valors de les dades s’aproximen amb el <strong>producte escalar ordinari</strong> entre dos vectors:</p>
+
+<p><img src="AD.assets/image-20200227095710124.png" alt="image-20200227095710124" style="zoom:80%;" /></p>
+
+<p>Veiem que, efectivament,
+<script type="math/tex">\cos\theta=\frac{\|p_i\|}{\|f_i\|}=\frac{f_i^Tg_j}{\|f_i\|\cdot\|g_i\|},\quad \|p_i\|=\frac{f_i^Tg_j}{\|g_j\|},\quad x_{ij}\approx f_i^Tg_j=\|p_i\|\cdot\|g_j\|.</script></p>
+
+<h4 id="biplots-a-la-pca"><em>Biplots</em> a la PCA</h4>
+
+<p>La PCA dóna un <em>biplot</em> de la matriu de dades centrades. S’obté representant conjuntament les dues primeres components principals (les primeres dues columnes de $F_p$) i els dos primers vectors propis (primeres dues columnes de $G_s$). Les files de $F_p$ es representen normalment amb punts, i les files de $G_s$ amb fletxes. Les coordenades $F_p$ s’anomenen <span style="color:blue">coordenades principals</span>, i les coordenades $G_s$ s’anomenen <span style="color:blue">coordenades estàndar</span>. Aquestes últimes compleixen $G_s^TG_s=I$.</p>
+
+<p>Es pot fer un escalat alternatiu del <em>biplot</em>. Utilitzant $D_s$ la matriu diagonal amb les desviacions típiques de les components principals,
+<script type="math/tex">X_c=F_pD_s^{-1}D_sG_s^T=F_sD_sG_s^T=F_sG_p^T,\\ G_p=G_sD_s.</script>
+Aquest <em>biplot</em> representa les <span style="color:blue">components principals estandaritzades</span>, $F_s=F_pD_s^{-1}$. Tenim, per tant, dos <em>biplots</em>:</p>
+
+<ul>
+  <li>$X_c=F_pG_s^T$ (<em>biplot</em> de <span style="color:blue">forma</span>)</li>
+  <li>$X_c=F_sG_p^T$ (<em>biplot</em> de <span style="color:blue">covariància</span>)</li>
+</ul>
+
+<p>En general, els <em>biplots</em> de forma es centren en la <strong>representació de distàncies</strong>, mentre que els <em>biplots</em> de covariància es centren en representar la <strong>estructura de correlació</strong>.</p>
+
+<h4 id="propietats-dels-biplots">Propietats dels <em>biplots</em></h4>
+
+<ul>
+  <li>En el <em>biplot</em> de forma, les distàncies euclidianes entre punts aproximen les distàncies euclidianes entre files de la matriu de dades.</li>
+  <li>En el <em>biplot</em> de covariància:
+    <ul>
+      <li>Les distàncies euclidianes entre punts aproximen les distàncies de Mahalanobis entre files de la matriu de dades.</li>
+      <li>La longitud d’una fletxa aproxima la desviació típica de la variable corresponent.</li>
+      <li>L’angle entre dues fletxes aproxima la correlació entre les variables corresponents.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="biplots-a-r"><em>Biplots</em> a R</h4>
+
+<p>Amb aquestes instruccions</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="nb">F</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="nb">F</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">)</span><span class="w">
+</span><span class="n">point</span><span class="p">(</span><span class="n">G</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">G</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">)</span><span class="w">
+</span><span class="n">arrows</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">G</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">G</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">])</span><span class="w">
+</span></code></pre></div></div>
+
+<p>podem representar el següent <em>biplot</em>:</p>
+
+<p><img src="AD.assets/image-20200227093108970.png" alt="image-20200227093108970" style="zoom:80%;" /></p>
+
+<h3 id="quantes-components-utilitzem">Quantes components utilitzem?</h3>
+
+<p>Els criteris a considerar són els següents:</p>
+
+<ul>
+  <li>El <strong>percentatge de variància explicada</strong>; volem que sigui $&gt;80\%$.</li>
+  <li>El <strong>mòdul del valor propi corresponent</strong>; volem valors propis $&gt;\bar\lambda$.</li>
+  <li>L’<strong>scree-plot</strong>; ens dona una visualització gràfica dels valors propis, és a dir, de quanta variància explica cada component.</li>
+  <li>Tests de significància amb els valors propis.</li>
+</ul>
+
+<p>Si ho plantegem matemàticament,
+<script type="math/tex">\text{tr}(S)=\text{tr}(AD_\lambda A^T)=\text{tr}(D_\lambda),\\
+\sum_{i=1}^p\text{Var}(X_i)=\sum_{i=1}^p\text{Var}(F_i)=\sum_{i=1}^p\lambda_i,</script></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>$F_1$</th>
+      <th>$F_2$</th>
+      <th>$\cdots$</th>
+      <th>$F_p$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Variància</strong></td>
+      <td>$\lambda_1$</td>
+      <td>$\lambda_2$</td>
+      <td>$\cdots$</td>
+      <td>$\lambda_p$</td>
+    </tr>
+    <tr>
+      <td><strong>Fracció</strong></td>
+      <td>$\lambda_1/\sum\lambda_i$</td>
+      <td>$\lambda_2/\sum\lambda_i$</td>
+      <td>$\cdots$</td>
+      <td>$\lambda_p/\sum\lambda_i$</td>
+    </tr>
+    <tr>
+      <td><strong>Fracció acumulada</strong></td>
+      <td>$\lambda_1/\sum\lambda_i$</td>
+      <td>$(\lambda_1+\lambda_2)/\sum\lambda_i$</td>
+      <td>$\cdots$</td>
+      <td>$\sum\lambda_i/\sum\lambda_i$</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="tipus-de-pca">Tipus de PCA</h4>
+
+<p>Hi ha dos tipus de PCA. Els càlculs es poden basar en</p>
+
+<ul>
+  <li>La <strong>matriu de covariàncies</strong> $S$:
+    <ul>
+      <li>No és invariant respecte l’escala de mesura.</li>
+      <li>La variable amb variància més gran domina.</li>
+    </ul>
+  </li>
+  <li>La <strong>matriu de correlacions</strong> $R$:
+    <ul>
+      <li>És invariant respecte l’escala de mesura.</li>
+      <li>Totes les variables contribueixen de la mateixa manera.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="interpretació">Interpretació</h4>
+
+<p>Les components es poden interpretar amb l’ajuda dels coeficients de les variables, de les correlacions entre variables i components, i amb el <em>biplot</em>. Si l’objectiu és tenir una imatge de la matriu de dades, aleshores la interpretació de les components podria no ser necessària.</p>
+
+<h3 id="sobre-la-bondat-dajust">Sobre la bondat d’ajust</h3>
+
+<p>Dels valors propis de l’anàlisi, es pot calcular la bondat d’ajust total d’una solució $k$-dimensional. També es pot calcular la bondat d’ajust per cada fila i columna de la matriu de dades. La bondat d’ajust de les variables també es pot calcular com l’$R^2$ en una regressió sobre les components principals.</p>
+:ET

@@ -2,10 +2,11 @@
 layout: default
 ---
 
+{% if page.mathjax  %}
+{% include mathjax_support.html %}
+{% endif %}
+
 <article role="article">
   <!--<h1>{{ page.title }}</h1>-->
   {{ content }}
 </article>
-
-
-

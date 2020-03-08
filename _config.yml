@@ -1,11 +1,10 @@
-site: Ultra
-url: https://example.com
-title: Ultra
-description: Ultra - Super fast Jekyll theme, weighs under 2kb
+site: Atellas23
+url: https://atellas23.github.io
+title: Atellas23
+description: Pàgina personal de GitHub
 twitter:
   username: yourusername
   card: summary
-
 permalink: pretty
 
 paginate:            1000
