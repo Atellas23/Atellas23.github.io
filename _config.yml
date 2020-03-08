@@ -30,7 +30,7 @@ twitter_username: jekyllrb
 github_username:  Atellas23
 
 # Build settings
-theme: minima
+remote_theme: ronv/ultra
 plugins:
   - jekyll-feed
 
