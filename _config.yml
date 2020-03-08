@@ -1,11 +1,12 @@
 site: Atellas23
 url: https://atellas23.github.io
 title: Atellas23
-description: Pàgina personal de GitHub
-twitter:
-  username: yourusername
-  card: summary
+description: Hi, I'm Atellas23!
+# twitter:
+#   username: yourusername
+#   card: summary
 permalink: pretty
+presentation: This is a test<br>vvnew line
 
 paginate:            1000
 paginate_path:       "/page:num/"
