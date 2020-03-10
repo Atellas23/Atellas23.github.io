@@ -1,12 +1,12 @@
 site: Atellas23
 url: https://atellas23.github.io
 title: Atellas23
-description: Hi, I'm Atellas23!
+description: Atellas23 - Student, programmer, gamer.
 # twitter:
 #   username: yourusername
 #   card: summary
 permalink: pretty
-presentation: This is a test<br>vvnew line
+presentation: Welcome to my page! Here I present some of my projects, academic and non-academic. If you want to contact me, you can see how to do that in the About page at the top.
 
 paginate:            1000
 paginate_path:       "/page:num/"
