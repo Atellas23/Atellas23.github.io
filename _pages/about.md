@@ -10,7 +10,7 @@ title: About
 <p align="center">
   <a href="mailto:alex.batlle01@gmail.com">alex.batlle01@gmail.com</a> |
   <a>+34 620 93 76 28</a> |
-  <a href="https://github.com/Atella23">GitHub</a> |
+  <a href="https://github.com/Atellas23">GitHub</a> |
   <a href="https://linkedin.com/in/atellas23">Linkedin</a> |
 </p>
 
