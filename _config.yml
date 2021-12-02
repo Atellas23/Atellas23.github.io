@@ -2,11 +2,11 @@ site: Atellas23
 url: https://atellas23.github.io
 title: Atellas23
 description: Atellas23
-# twitter:
-#   username: yourusername
-#   card: summary
+twitter:
+  username: atellas23
+  card: summary
 permalink: pretty
-presentation: Welcome to my page! Here I present some of my projects, academic and non-academic. If you want to contact me, you can see how to do that in the About page at the top.
+presentation: Welcome to my webpage! My name's Àlex, I'm a Data Science and Mathematics student at CFIS-UPC. Please refer to the several subpages for more information on my work, my projects and myself.
 
 paginate:            1000
 paginate_path:       "/page:num/"
