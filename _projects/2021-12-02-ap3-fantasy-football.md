@@ -2,7 +2,7 @@
 layout: project
 title: Fantasy Football
 description: Programming project done within the AP3 course from the DSE bachelor's degree. Implemented an exhaustive search, a greedy algorithm and a modified GRASP metaheuristic in a knapsack-like problem.
-summary: Programming project done within the AP3 course from the DSE bachelor's degree. Implemented an exhaustive search, a greedy algorithm and a modified GRASP metaheuristic in a knapsack-like problem.
+summary: Programming project done within the AP3 course from the DSE bachelor's degree. Implemented an exhaustive search, a greedy algorithm and a modified GRASP metaheuristic in a knapsack-like problem. Hosted on [GitHub](https://github.com/Atellas23/Fantasy_Football)
 category: university-coursework
 ---
 # Fantasy Football
