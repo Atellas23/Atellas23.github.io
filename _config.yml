@@ -63,7 +63,12 @@ defaults:
       type: "projects"
     values:
       layout: "project"
-      
+  -
+    scope:
+      path: ""
+      type: "files"
+    values:
+      layout: "file_list"
   - scope:
       path: "assets/images"
     values:
