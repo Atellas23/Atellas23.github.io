@@ -1,0 +1,13 @@
+---
+layout: default
+title: Notes
+---
+
+{% for file in site.files %}
+<article role="article">
+    <h2><a href="{{ site.baseurl }}{{ file.url }}">
+            {{ file.title }}
+        </a></h2>
+    <p>{{ file.summary }}</p>
+</article>
+{% endfor %}
