@@ -37,7 +37,7 @@ collections:
     permalink: /projects/:slug
   files:
     output: true
-    permalink: /files/:name
+    permalink: /files
   
 defaults:
   -
