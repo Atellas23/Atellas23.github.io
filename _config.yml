@@ -11,7 +11,7 @@ presentation: Welcome to my webpage! My name's Àlex, I'm a Data Science and Mat
 paginate:            1000
 paginate_path:       "/page:num/"
 baseurl:             ""
-  
+
 compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]
@@ -19,12 +19,13 @@ compress_html:
 sass:
   sass_dir:          _sass
   style:            :compressed
-
+remote_theme: pages-themes/hacker@v0.2.0
 plugins:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-seo-tag
   - jekyll-sitemap  
+  - jekyll-remote-theme
 
 collections:
   pages:
