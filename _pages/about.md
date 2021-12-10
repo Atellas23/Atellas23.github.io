@@ -12,6 +12,7 @@ title: About
   <a>+34 620 93 76 28</a> |
   <a href="https://github.com/Atellas23">GitHub</a> |
   <a href="https://linkedin.com/in/atellas23">Linkedin</a> |
+  <a href="/files/CV_eng.pdf">CV</a>
 </p>
 
 Hi, my name's Àlex! I'm a very curious and open minded university student based in a town near Barcelona, the very cosmopolitan capital city of Catalonia, Spain.
